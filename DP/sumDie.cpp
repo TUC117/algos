@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-
+// DONE
 class Solution{
 public:
     long long int sum(int n){

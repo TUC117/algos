@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-
+// NOT DONE
 int main(){
     // recursion for this is S(n+1,k) = k*S(n,k)[added to sets of every partion] + S(n,k-1)[Added as single element to existing partion]
     int t; std::cin>>t;
