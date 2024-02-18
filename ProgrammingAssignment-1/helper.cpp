@@ -45,6 +45,7 @@ float areaOfTwoTrapiziums(pair<Point, Point> A, pair<Point, Point> B){
 	if(commonbase<=0) return arrTrep1+arrTrep2;
 
 	// Case - 2: Partialy intersecting
+	
 	// Subcases where intersecting part is a trapezium
 	float check1 = (ay2-ay1)/(ax2-ax1)*(bx1-ax1) + ay1;
 	if(ay2>by1 && check1>=by1){
