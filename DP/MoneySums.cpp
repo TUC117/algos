@@ -10,26 +10,36 @@ int main(){
         cin>>a[i];
         x += a[i];
     }
-    int dp[x+1];
-    bool vdp[x+1];
-    cout<<x<<endl;
-    for(int i=0;i<x+1;i++) dp[i]=i;
-    for(int i=0;i<x+1;i++) vdp[i]=false;
-    dp[0]=1;
-        for(int i=0;i<x+1;i++){
-            for(int j=0;j<n;j++){
-                if(dp[i]-a[j]==0 ){
-                    vdp[i] = 1;
-                    // dp[i] = dp[i]%(1000000007);
-                }
-                else{
-                    dp[i] -= a[j];
-                }
-            }
+    // int dp[n+1][x+1];
+    
+
+    bool dp[n+1][x+1];
+    dp[0][0] = 1;
+    for( int i=1;i<=x;i++) {dp[0][i] = 0;
+    // maxprice[0][i] = 0;
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=0;j<=x;j++){
+            dp[i][j] = 0;
         }
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=0;j<=x;j++){
+            if(j-a[i-1] >=0) {
+                dp[i][j] |= dp[i-1][j-a[i-1]];
+            }
+            dp[i][j] |= dp[i-1][j];
+        }
+    }
+    int num = 0;
     for(int i=1;i<x+1;i++){
-        // if(dp[i]!=0) cout<<i<<" ";
-        cout<<vdp[i]<<" ";
+        if(dp[n][i]) num++;
+    }
+    cout<<num<<endl;
+    for(int i=1;i<x+1;i++){
+        if(dp[n][i]) cout<<i<<" ";
     }
     cout<<endl;
+    
+    
 }
