@@ -195,18 +195,6 @@ int main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	for (int i=0;i<10;++i) bases.push_back(rand()%(MOD-13893829)+13893829);
-	cin>>n>>m;
-	if (n>m) swap(n,m);
-	memset(dp,1,sizeof(dp));
-	for (int i=1;i<=n;++i)
-	{
-		dp[i][i]=0;
-		for (int j=i+1;j<=m;++j)
-		{
-			for (int k=1;k<j;++k) dp[i][j]=dp[j][i]=min(dp[i][j],dp[i][k]+dp[i][j-k]+1);
-			for (int k=1;k<i;++k) dp[i][j]=dp[j][i]=min(dp[i][j],dp[k][j]+dp[i-k][j]+1);
-		}
-		//for (int j=i;j<=m;++j) cout<<i<<' '<<j<<' '<<dp[i][j]<<endl;
-	}
-	cout<<dp[n][m];
+
+	
 }

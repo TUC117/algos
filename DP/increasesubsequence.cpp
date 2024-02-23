@@ -1,31 +1,23 @@
-#include <vector>
-#include <algorithm>
-#include <iostream>
-using namespace std;
-int longest_increasing_subsequence(std::vector<int>& nums) {
-    std::vector<int> tails(nums.size(), 0);
-    int size = 0;
-    for (int x : nums) {
-        int i = 0, j = size;
-        while (i != j) {
-            int m = (i + j) / 2;
-            if (tails[m] < x)
-                i = m + 1;
-            else
-                j = m;
-        }
-        tails[i] = x;
-        if (i == size) ++size;
-    }
-    return size;
-}
+#include <bits/stdc++.h>
+using i64 = long long;
 
-int main(){
+int main() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    
     int n;
-    cin>>n;
-    vector<int> nums(n);
-    for(int i:nums){
-        cin>>i;
+    std::cin >> n;
+    std::vector<int> dp1;
+    for (int i = 0; i < n; i++) {
+        int x;
+        std::cin >> x;
+        auto it = std::lower_bound(dp1.begin(), dp1.end(), x);
+        if (it == dp1.end()) {
+            dp1.push_back(x);
+        }else {
+            *it = x;
+        }
     }
-    cout<<longest_increasing_subsequence(nums)<<endl;
-}
+    std::cout << dp1.size() << std::endl;	
+    return 0;
+}  
