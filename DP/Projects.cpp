@@ -30,7 +30,11 @@ int main(){
     }
     // Now we have n in order of decreasing time.
     
-
+    int dp[n+1];
+    for(int i=n;i>=0;i--){
+        int 
+        dp[i] = dp[i+1] + dp[i-k];
+    }
     // for(auto &i : vec){
     //     std::cout<<i.a1<<" ";
     //     std::cout<<i.b1<<" ";
