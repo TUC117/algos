@@ -5,6 +5,10 @@
 #include <algorithm>
 using namespace std;
 
+// bool compare(const object &a, const object &b) {
+//     return a.b1 < b.b1;
+// }
+
 
 class Point {
  public:
@@ -80,15 +84,17 @@ int main(){
 		cin >> b;
 		cin >> c;
 		cin >> d;
-		posters.push_back(make_pair(Point(a,b), Point(c,d)));	
+		posters.push_back(make_pair(Point(a,b), Point(c,d)));
 	}
 
 	float lengthCovered =0; 
 	float area =0;
-	// for(int i=0;i<n;i++){
-	// 	cout<<posters[i].first.X()<<" "<<posters[i].first.Y()<<" "<<posters[i].second.X()<<" "<<posters[i].second.Y()<<endl;
-	// }
-	cout<<areaOfTwoTrapiziums(posters[0],posters[1])<<endl;
+	for(int i=0;i<n;i++){
+		cout<<posters[i].first.X()<<" "<<posters[i].first.Y()<<" "<<posters[i].second.X()<<" "<<posters[i].second.Y()<<endl;
+	}
+	lengthCovered = length()
+	// cout<<areaOfTwoTrapiziums(posters[0],posters[1])<<endl;
+	
  
 	cout << static_cast<int>(lengthCovered)<< endl;
 	
