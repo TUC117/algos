@@ -23,18 +23,18 @@ class Point {
   
 };
 
-bool comparePosters(const std::pair<Point, Point>& a, const std::pair<Point, Point>& b) {
-    return a.first.X() < b.first.X();
+bool comparePosters(const pair<pair<Point, Point>, float>& a, const pair<pair<Point, Point>, float>& b) {
+    return a.first.first.X() < b.first.first.X();
 }
 
-float length(vector<pair<Point, Point>> posters){
-	float lenCov = posters[0].second.X()-posters[0].first.X();
-	float MaxX = posters[0].second.X();
+float length(vector <pair<pair<Point, Point>,float>> posters){
+	float lenCov = posters[0].first.second.X()-posters[0].first.first.X();
+	float MaxX = posters[0].first.second.X();
 	for(auto p:posters){
-			if(MaxX < p.second.X()){
-				MaxX = max(MaxX, p.first.X());
-				lenCov += -MaxX + p.second.X();
-				MaxX = p.second.X();
+			if(MaxX < p.first.second.X()){
+				MaxX = max(MaxX, p.first.first.X());
+				lenCov += -MaxX + p.first.second.X();
+				MaxX = p.first.second.X();
 		 }
 	}
 	return lenCov;
@@ -45,7 +45,7 @@ int main(){
 	cin >> n;
 	float a,b,c,d;
 
-	vector <pair<Point, Point>> posters; 
+	vector <pair<pair<Point, Point>,float>> posters; 
 
 
 	for(int i=0; i<n; i++){
@@ -53,28 +53,31 @@ int main(){
 		cin >> b;
 		cin >> c;
 		cin >> d;
-		posters.push_back(make_pair(Point(a,b), Point(c,d)));
+		float slope;
+		if(c!=a) slope = (float)(d-b)/(c-a);
+		else slope = 1e18;
+		posters.push_back(make_pair( make_pair(Point(a,b), Point(c,d)),slope));
 	}
 
 	float lengthCovered =0; 
 	float area =0;
 	
 	// Sorting the posters in increasing order of their c
-	stable_sort(posters.begin(), posters.end(), comparePosters);
-
-
-
-	// for(int i=0;i<n;i++){
-	// 	cout<<posters[i].first.X()<<" "<<posters[i].first.Y()<<" "<<posters[i].second.X()<<" "<<posters[i].second.Y()<<endl;
-	// }
-	lengthCovered = length(posters);
-	// cout<<areaOfTwoTrapiziums(posters[0],posters[1])<<endl;
 	
- 
+
+
+
+	for(int i=0;i<n;i++){
+		cout<<posters[i].first.first.X()<<" "<<posters[i].first.first.Y()<<" "<<posters[i].first.second.X()<<" "<<posters[i].first.second.Y()<<" "<<posters[i].second<<endl;
+	}
+	
+	// cout<<areaOfTwoTrapiziums(posters[0],posters[1])<<endl;
+	sort(posters.begin(), posters.end(), comparePosters);
+	lengthCovered = length(posters);
 	cout << static_cast<int>(lengthCovered)<< endl;
 	
 	cout << static_cast<int>(area)<< endl;
 
-	return 0;
+	return 0; 
 }
 
