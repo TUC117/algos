@@ -11,6 +11,7 @@ struct object{
 bool compare(const object &a, const object &b) {
     return a.b1 < b.b1;
 }
+
 int getk(std::vector<object>& vec, int i) {
     int left = i;
     int target = vec[i].b1;
@@ -54,16 +55,33 @@ int main(){
         auto it = std::upper_bound(vec.begin(), vec.end(), temp, compare);
         vec.insert(it, temp);
     }
-    
+  
     std::vector<int> dp(n+1,INT_MIN);
     for(int i=1;i<n+1;i++) dp[i] = vec[i-1].p;
-    
-    for(int i=n-1;i>=0;i--){
-        int k = getk(vec, i);
-        dp[i] = std::max(dp[i+1],dp[i]);
-        if(k!=-1 && i+k<n) dp[i] = std::max(dp[i+1], dp[i+1+k]+vec[i].p);
+    // dp[n] = vec[n-1].p;
+    for(int i=0;i<n;i++){
+        std::cout<<"\n"<<vec[i].a1<<" "<<vec[i].b1<<" "<<vec[i].p;
     }
-    std::cout<<dp[0]<<"\n";
+    std::cout<<"\n";
+    std::vector<int> indexes(n);
+    for(int i=0;i<n;i++){
+        int k = getk(vec, i);
+        indexes[i] = k;
+    }
+    for(int i=0;i<n;i++){
+        std::cout<<indexes[i]<<" ";
+    }
+    // for(int i=n-1;i>=0;i--){
+    //     if(k!=-1 && i+k<n) {
+    //         dp[i] = std::max(dp[i+1],dp[i]);
+    //         dp[i] = std::max(dp[i+1], dp[i+1+k]+vec[i].p);
+    //     }
+    //     else{
+    //         dp[i] = vec[i-1].p;
+    //         dp[i] += dp[i-1];
+    //     }
+    // }
+    // std::cout<<dp[0]<<"\n";
     
 
     return 0;
