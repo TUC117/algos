@@ -5,10 +5,6 @@
 #include <algorithm>
 using namespace std;
 
-// bool compare(const object &a, const object &b) {
-//     return a.b1 < b.b1;
-// }
-
 
 class Point {
  public:
@@ -27,57 +23,30 @@ class Point {
   
 };
 
-float areaOfTwoTrapiziums(pair<Point, Point> A, pair<Point, Point> B){
-	float ax1 = A.first.X();
-	float ax2 = A.second.X();
-	float ay1 = A.first.Y();
-	float ay2 = A.second.Y();
-
-	float bx1 = B.first.X();
-	float bx2 = B.second.X();
-	float by1 = B.first.Y();
-	float by2 = B.second.Y();
-
-	// Finding the individual areas;
-	float arrTrep1 = abs(ax2-ax1)*(ay1+ay2)*0.5;
-	float arrTrep2 = abs(bx2-bx1)*(by1+by2)*0.5;
-
-	// Finding the intersecting part of the area
-	float commonbase = min(ax2,bx2) - max(ax1,bx1);
-
-	// Case - 1: Not intersecting
-	if(commonbase<=0) return arrTrep1+arrTrep2;
-
-	// Case - 2: Partialy intersecting
-	
-	// Subcases where intersecting part is a trapezium
-	float check1 = (ay2-ay1)/(ax2-ax1)*(bx1-ax1) + ay1;
-	if(ay2>by1 && check1>=by1){
-		// ay2 will intersect the line at some poin
-		float y = ((by1-by2)*bx1 - (bx1-bx2)*by1)/(by1-by2-bx1+bx2);
-		float intersect = (0.5)*(commonbase)*(by1+y);
-		return arrTrep1+arrTrep2-intersect;
-	}
-	float check2 = (by2-by1)/(bx2-bx1)*(ax2-bx1) + by1;
-	if(ay2<by1 && check2 >=ay2){
-		float y = ay2 - ((ay1-ay2)/(ax1-ax2))*(commonbase);
-		float intersect = (0.5)*(commonbase)*(y+ay2);
-		return arrTrep1+arrTrep2-intersect;
-	}
-
-	// Subcases where intersecting part is two trapeziums 
-	
- 	return -1.0;
-
+bool comparePosters(const std::pair<Point, Point>& a, const std::pair<Point, Point>& b) {
+    return a.first.X() < b.first.X();
 }
 
+float length(vector<pair<Point, Point>> posters){
+	float lenCov = posters[0].second.X()-posters[0].first.X();
+	float MaxX = posters[0].second.X();
+	for(auto p:posters){
+			if(MaxX < p.second.X()){
+				MaxX = max(MaxX, p.first.X());
+				lenCov += -MaxX + p.second.X();
+				MaxX = p.second.X();
+		 }
+	}
+	return lenCov;
+}
 int main(){
 	   /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
 	int n;
 	cin >> n;
 	float a,b,c,d;
 
-	vector <pair<Point, Point> > posters; 
+	vector <pair<Point, Point>> posters; 
+
 
 	for(int i=0; i<n; i++){
 		cin >> a;
@@ -89,10 +58,16 @@ int main(){
 
 	float lengthCovered =0; 
 	float area =0;
-	for(int i=0;i<n;i++){
-		cout<<posters[i].first.X()<<" "<<posters[i].first.Y()<<" "<<posters[i].second.X()<<" "<<posters[i].second.Y()<<endl;
-	}
-	lengthCovered = length()
+	
+	// Sorting the posters in increasing order of their c
+	stable_sort(posters.begin(), posters.end(), comparePosters);
+
+
+
+	// for(int i=0;i<n;i++){
+	// 	cout<<posters[i].first.X()<<" "<<posters[i].first.Y()<<" "<<posters[i].second.X()<<" "<<posters[i].second.Y()<<endl;
+	// }
+	lengthCovered = length(posters);
 	// cout<<areaOfTwoTrapiziums(posters[0],posters[1])<<endl;
 	
  
