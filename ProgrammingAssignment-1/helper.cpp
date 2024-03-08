@@ -29,8 +29,6 @@ class Point {
 	void setY(float yVal) { y = yVal; }    
 };
 
-// #define DEBUG
-
 #define pp pair<pair<Point,Point>,double>
 typedef long long ll;
 #define all(x) x.begin(), x.end()
@@ -497,5 +495,3 @@ int main(){
 
 	return 0; 
 }
-
-
