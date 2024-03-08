@@ -1,7 +1,3 @@
-/*
-	AUTHOR - TUK04
-*/
-
 #include <cmath>
 #include <cstdio>
 #include <vector>
@@ -54,62 +50,6 @@ typedef long long ll;
 #define setsx(t, val) t.first.second.setX(val)
 #define setfx(t, val) t.first.first.setX(val)
 
-bool comparePosters(const pp& a, const pp& b) {
-    return a.first.first.X() < b.first.first.X();
-}
-
-float length(vector <pp> posters){
-	float lenCov = posters[0].first.second.X()-posters[0].first.first.X();
-	float MaxX = posters[0].first.second.X();
-	for(auto p:posters){
-			if(MaxX < p.first.second.X()){
-				MaxX = max(MaxX, p.first.first.X());
-				lenCov += -MaxX + p.first.second.X();
-				MaxX = p.first.second.X();
-		 }
-	}
-	return lenCov;
-}
-
-bool isintersecting(pp a,pp b){
-	return ((fy(a)-fy(b))*(sy(a)-sy(b))<=0);
-}
-
-void updateintersection(pp &a, pp &b, bool com, float h1, float h2){
-	if(a.second == 0 && b.second == 0){
-		// sy(a) = fx(b);
-		setsy(a,fx(b));
-		// sy(b) = fy(b);
-		setfy(b,fy(b));
-	}
-	float X = (fy(a) - fy(b) + b.second*fx(b) - a.second*fx(a))/(b.second - a.second);
-	float Y = a.second*(X-fx(a)) + fy(a);	
-	if(com){
-		if(h1>=h2){
-			setfx(b,X);
-			setfy(b,Y);			
-		}
-		else{
-			setsx(b,X);
-			setsy(b,Y);
-		}
-	}
-	else{
-		if(h1>=h2){
-			setfx(b,X);
-			setfy(b,Y);
-			setsx(a,X);
-			setsy(a,Y);
-		}
-		else if(h1<h2){
-			//many cases ig
-			setfx(a,X);
-			setfy(a,Y);
-		}
-	}
-
-}
-
 vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 	vec(pp) res;
 	ll li=0, ri = 0;
@@ -123,16 +63,15 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 		// Base cases
 		// if(fx(left[]))
 		#ifdef DEBUG
-		// out("entered main loop");
+		out("entered main loop");
 		#endif
 
-		if((fx(left[li]) <= fx(right[ri]) && sx(left[li]) >= fx(right[ri])) ){
+		if((fx(left[li]) <= fx(right[ri]) && sx(left[li]) > fx(right[ri])) ){
 			// x-axis is completely inside 
 				#ifdef DEBUG
 				out("left < right");
 				#endif
-			// float h1 = (fx(right[ri])-fx(left[li]))*left[li].second + (fy(left[li]) - left[li].second*fx(left[li]));
-			float h1 = left[li]
+			float h1 = (fx(right[ri])-fx(left[li]))*left[li].second + (fy(left[li]) - left[li].second*fx(left[li]));
 			float h2 = fy(right[ri]);
 			if(sx(right[ri]) <=sx(left[li])){
 				#ifdef DEBUG
@@ -204,7 +143,7 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 				if(flag){
 					#ifdef DEBUG
 					out("one is partailly inside other -  left < right - INtersecting");
-					#endif
+					#endif					
 					if(h1<h2){
 						#ifdef DEBUG
 						out("one is partailly inside other -  left < right - INtersecting - h1 < h2");
@@ -231,8 +170,6 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						out("one is partailly inside other -  left < right - INtersecting - h1 >= h2");
 						#endif																	
 						updateintersection(left[li],right[ri],0,h1,h2);
-						// li++;
-						res.pb(left[li]);
 						li++;
 					}
 				}
@@ -368,19 +305,19 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 			// }	
 		}
 
-		if(li < left.size() && ri < right.size() && sx(left[li]) < fx(right[ri])){
+		if(sx(left[li]) < fx(right[ri])){
 			#ifdef DEBUG
 			out("NOT IN MAIN CASE 1");
 			#endif				
 			res.pb(left[li]);
 			li++;
 		}
-		if(li < left.size() && ri < right.size() && sx(right[ri]) < sx(left[li])){
+		if(sx(right[ri]) < sx(left[li])){
 			#ifdef DEBUG
 			out("NOT IN MAIN CASE 2");
 			#endif							
-			res.pb(right[ri]);
-			ri++;
+			res.pb(right[li]);
+			li++;
 		}
 
 	} 
@@ -402,69 +339,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 	return res;
 }
 
-
-vec(pp)merger_sort(vec(pp)posters){
-
-	#ifdef DEBUG
-    	out("i am in merger_sort");
-	#endif
-
-	if(posters.size()==1) return posters;
-	vec(pp) left(posters.begin(), posters.begin()+posters.size()/2);
-	vec(pp) right(posters.begin()+posters.size()/2, posters.end());
-	left = merger_sort(left);
-	right = merger_sort(right);
-	return mymerge(left,right);
-}
-
-float calarea(vec(pp) data){
-	float area = 0;
-	for(auto i : data){
-		area += (sx(i)-fx(i))*(fy(i) + sy(i))*0.5;
-	}
-	return area;
-}
-
 int main(){
-	   /* Enter your code here. Read input from STDIN. Print output to STDOUT */  
-	jui();
-	int n;
-	in(n);
-	float a,b,c,d;
-
-	vec(pp) posters; 
-
-	for(int i=0; i<n; i++){
-		in(a>>b>>c>>d);
-		float slope;
-		if(c!=a) slope = (float)(d-b)/(c-a);
-		else slope = 1e18;
-		posters.pb(mp(mp(Point(a,b), Point(c,d)),slope));
-	}
-
-	float lengthCovered =0; 
-	float area =0;
-	// Sorting the posters in increasing order of their c
+	pp a, b;
+	int a,b,c,d;
+	float s1, s2;
 	
-	// for(int i=0;i<n;i++){
-	// 	cout<<posters[i].first.first.X()<<" "<<posters[i].first.first.Y()<<" "<<posters[i].first.second.X()<<" "<<posters[i].first.second.Y()<<" "<<posters[i].second<<endl;
-	// }
-	// #ifdef DEBUG
-	// #endif
-	vec(pp) posters1 = posters;
-	sort(posters1.begin(), posters1.end(), comparePosters);
-	lengthCovered = length(posters1);
-	cout << static_cast<int>(lengthCovered)<< endl;
-
-
-	vec(pp) data = merger_sort(posters);
-	area = calarea(data);
-	for(auto i : data){
-		out(fx(i)<<" "<<fy(i)<<" "<<sx(i)<<" "<<sy(i)<<"\n");
-	}
-	// cout<<areaOfTwoTrapiziums(posters[0],posters[1])<<endl;
-	cout << static_cast<int>(area)<< endl;
-
-	return 0; 
 }
-
