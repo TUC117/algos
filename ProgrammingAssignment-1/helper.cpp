@@ -77,7 +77,10 @@ float length(vector <pp> posters){
 }
 
 bool isintersecting(pp a,pp b){
-	return ((fy(a)-fy(b))*(sy(a)-sy(b))<=0);
+	float X = (fy(a) - fy(b) + b.second*fx(b) - a.second*fx(a))/(b.second - a.second);
+	float Y = a.second*(X-fx(a)) + fy(a);
+	// return ((fy(a)-fy(b))*(sy(a)-sy(b))<=0);
+	return ((X < fx(a) && X > sx(a)) && (X < fx(b) && X > sx(b)));
 }
 
 void helpme(pp &a, float FX, float FY, float SX, float SY, float slope){
@@ -97,7 +100,8 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 	// #endif
 
 	while(li<left.size() && ri<right.size()){
-		dout("Entered main loop");
+		// cout << (fx(left[li])) << (" - ") << (fy(left[li])) << (" - ") << (sx(left[li])) << (" - ") << (sy(left[li])) << endl;
+		// cout << (fx(right[ri])) << (" - ") << (fy(right[ri])) << (" - ") << (sx(right[ri])) << (" - ") << (sy(right[ri])) << endl;
 		if(sx(right[ri]) <= fx(left[li])){
 			dout("CASE 1");
 			res.pb(right[ri]);
@@ -121,6 +125,10 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 				if(h1 > fy(right[ri])){
 					dout("CASE 3");
 					pp temp;
+					// if(fx(left[li]) > X){
+					// 	cout << (fx(left[li])) << (" - ") << (fy(left[li])) << (" - ") << (sx(left[li])) << (" - ") << (sy(left[li])) << endl;
+					// 	cout << (fx(right[ri])) << (" - ") << (fy(right[ri])) << (" - ") << (sx(right[ri])) << (" - ") << (sy(right[ri])) << endl;
+					// }
 					helpme(temp, fx(left[li]), fy(left[li]), X, Y, left[li].second);
 					res.pb(temp);
 					helpme(right[ri], X, Y, sx(right[ri]), sy(right[ri]), right[ri].second);
@@ -166,7 +174,6 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 			else{
 				// dout("HIII");
 				float h1 = fx(right[ri])*left[li].second + (fy(left[li]) - left[li].second*fx(left[li]));
-				
 				if(h1>fy(right[ri])){
 					dout("CASE 7");
 					// res.pb(left[li]);
@@ -250,8 +257,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					li++;
 					// ri++;
 				}
-				else{
-					// if(h1<fy(left[li]))
+				else 
+				// if(h1<fy(left[li]))
+				{
 					dout("CASE 13");
 					pp temp;
 					helpme(temp, fx(right[ri]), fy(right[ri]), fx(left[li]), h1, right[ri].second);
@@ -403,7 +411,7 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 		}
 
 	} 
-
+    // dout("hii");
 	while(li<left.size()){
 			#ifdef DEBUG
 			out("Left is left");
@@ -438,10 +446,12 @@ vec(pp)merger_sort(vec(pp)posters){
 
 float calarea(vec(pp) data){
 	float area = 0;
-
+	// int n = 0;
 	for(auto i : data){
-		area += (abs(sx(i)-fx(i)))*(fy(i) + sy(i))*0.5;
+		area += (sx(i)-fx(i))*(fy(i) + sy(i))*0.5;
 	}
+	// cout << sx(i)-fx(i) << endl;
+	// cout << data.size() << endl;
 	return area;
 }
 
