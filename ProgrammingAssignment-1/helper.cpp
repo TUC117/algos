@@ -29,7 +29,7 @@ class Point {
 	void setY(float yVal) { y = yVal; }    
 };
 
-#define DEBUG
+// #define DEBUG
 
 #define pp pair<pair<Point,Point>,double>
 typedef long long ll;
@@ -54,9 +54,9 @@ typedef long long ll;
 #define setfx(t, val) t.first.first.setX(val)
 
 void dout(string s){
-				#ifdef DEBUG
-			out(s);
-			#endif		
+	#ifdef DEBUG
+		out(s);
+	#endif		
 }
 
 bool comparePosters(const pp& a, const pp& b) {
@@ -92,9 +92,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 	vec(pp) res;
 	ll li=0, ri = 0;
 	
-	#ifdef DEBUG
-    // out("i am in mymerge");
-	#endif
+	// #ifdef DEBUG
+    // // out("i am in mymerge");
+	// #endif
 
 	while(li<left.size() && ri<right.size()){
 		dout("Entered main loop");
@@ -153,7 +153,7 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						helpme(left[li], sx(right[ri]), left[li].second*(sx(right[ri])) + fy(left[li])-left[li].second*fx(left[li]), sx(left[li]), sy(left[li]), left[li].second);
 						// res.pb(left[li]);
 						ri++;
-						// li++;						
+						// li++;
 					}
 					else{
 						dout("CASE 6");
@@ -173,7 +173,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					// li++;
 					ri++;
 				}
-				else if(h1<fy(right[ri])){
+				else 
+				// if(h1<fy(right[ri]))
+				{
 					dout("CASE 8");
 					pp temp;
 					helpme(temp, fx(left[li]), fy(left[li]), fx(right[ri]), h1, left[li].second);
@@ -248,7 +250,8 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					li++;
 					// ri++;
 				}
-				else if(h1<fy(left[li])){
+				else{
+					// if(h1<fy(left[li]))
 					dout("CASE 13");
 					pp temp;
 					helpme(temp, fx(right[ri]), fy(right[ri]), fx(left[li]), h1, right[ri].second);
@@ -329,7 +332,8 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 				}
 			}
 		}
-		else if(fx(left[li]) > fx(right[ri]) && fx(left[li]) < sx(right[ri]) && sx(left[li]) > sx(right[ri])){
+		// else if(fx(left[li]) > fx(right[ri]) && fx(left[li]) < sx(right[ri]) && sx(left[li]) > sx(right[ri])){
+		else{
 			bool flag = isintersecting(left[li], right[ri]);
 			float h1 = fx(left[li])*right[ri].second + (fy(right[ri]) - right[ri].second*fx(right[ri]));
 			if(flag){
@@ -434,8 +438,9 @@ vec(pp)merger_sort(vec(pp)posters){
 
 float calarea(vec(pp) data){
 	float area = 0;
+
 	for(auto i : data){
-		area += (sx(i)-fx(i))*(fy(i) + sy(i))*0.5;
+		area += (abs(sx(i)-fx(i)))*(fy(i) + sy(i))*0.5;
 	}
 	return area;
 }
@@ -475,7 +480,7 @@ int main(){
 	vec(pp) data = merger_sort(posters);
 	area = calarea(data);
 	for(auto i : data){
-		out(fx(i)<<" "<<fy(i)<<" "<<sx(i)<<" "<<sy(i));
+		// out(fx(i)<<" "<<fy(i)<<" "<<sx(i)<<" "<<sy(i));
 	}
 	// cout<<areaOfTwoTrapiziums(posters[0],posters[1])<<endl;
 	cout << static_cast<int>(area)<< endl;
