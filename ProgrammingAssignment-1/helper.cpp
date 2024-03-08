@@ -75,41 +75,6 @@ bool isintersecting(pp a,pp b){
 	return ((fy(a)-fy(b))*(sy(a)-sy(b))<=0);
 }
 
-void updateintersection(pp &a, pp &b, bool com, float h1, float h2){
-	if(a.second == 0 && b.second == 0){
-		// sy(a) = fx(b);
-		setsy(a,fx(b));
-		// sy(b) = fy(b);
-		setfy(b,fy(b));
-	}
-	float X = (fy(a) - fy(b) + b.second*fx(b) - a.second*fx(a))/(b.second - a.second);
-	float Y = a.second*(X-fx(a)) + fy(a);	
-	if(com){
-		if(h1>=h2){
-			setfx(b,X);
-			setfy(b,Y);			
-		}
-		else{
-			setsx(b,X);
-			setsy(b,Y);
-		}
-	}
-	else{
-		if(h1>=h2){
-			setfx(b,X);
-			setfy(b,Y);
-			setsx(a,X);
-			setsy(a,Y);
-		}
-		else if(h1<h2){
-			//many cases ig
-			setfx(a,X);
-			setfy(a,Y);
-		}
-	}
-
-}
-
 vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 	vec(pp) res;
 	ll li=0, ri = 0;
@@ -126,7 +91,7 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 		out("entered main loop");
 		#endif
 
-		if((fx(left[li]) <= fx(right[ri]) && sx(left[li]) >= fx(right[ri])) ){ // CHECKED THIS PART
+		if(li < left.size() && ri < right.size() && (fx(left[li]) <= fx(right[ri]) && sx(left[li]) >= fx(right[ri])) ){
 			// x-axis is completely inside 
 				#ifdef DEBUG
 				out("left < right");
@@ -134,7 +99,7 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 			// float h1 = (fx(right[ri])-fx(left[li]))*left[li].second + (fy(left[li]) - left[li].second*fx(left[li]));
 			float h1 = left[li].second * fx(right[ri]) + (fy(left[li]) - left[li].second*fx(left[li]));
 			float h2 = fy(right[ri]);
-			if(sx(right[ri]) <=sx(left[li])){	// CHECKED THIS PART 
+			if(sx(right[ri]) <= sx(left[li])){	// CHECKED THIS PART 
 				
 				#ifdef DEBUG
 				out("one is completely inside other");
@@ -179,7 +144,7 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						setfx(a,fx(left[li]));
 						setfy(a,fy(left[li]));
 						setsx(a,fx(right[ri]));
-						setsy(a,fy(right[ri]));
+						setsy(a,fy(left[li]) + (fx(right[ri])-fx(left[li]))*left[li].second );
 						a.second = left[li].second;
 						#ifdef DEBUG
 						out(fx(a)<<" "<<fy(a)<<" "<<sx(a)<<" "<<sy(a));
@@ -240,6 +205,8 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						#endif						
 
 						// res.pb(left[li]);
+						res.pb(left[li]);
+						li++;
 						// li++;
 						ri++;
 					}
@@ -255,9 +222,13 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						setsy(temp,h1);
 						temp.second = left[li].second;
 						res.pb(temp);
+
 						res.pb(right[ri]);
+
 						setfx(left[li],sx(right[ri]));
 						setfy(left[li], h1+left[li].second*(sx(right[ri])-fx(right[ri])));
+						res.pb(left[li]);
+						li++;
 						ri++;
 					}
 				}
@@ -289,6 +260,7 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						setsy(left[li], Y);
 						res.pb(left[li]);
 						li++;
+
 						setfx(right[ri], X);
 						setfy(right[ri], Y);
 						res.pb(right[ri]);
@@ -385,16 +357,16 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 			}	
 		}
 
-		else if(fx(right[ri]) < fx(left[li]) && fx(left[li]) < sx(right[ri])){
+		if(li < left.size() && ri < right.size() && fx(right[ri]) < fx(left[li]) && fx(left[li]) <= sx(right[ri])){
 
-			float h1 = fy(left[li]);
+			// float h1 = fy(left[li]);
+			float h1 = left[li].second*sx(right[ri]) + (sy(left[li]) - left[li].second*sx(left[li]));
 			float h2 = fy(right[ri]);
-			
-			if(sx(right[ri])<=sx(left[li])){// CHECKED 
-				// x-axis is completely inside 
-				#ifdef DEBUG
+							#ifdef DEBUG
 				out("right < left");
 				#endif
+
+			if(sx(right[ri])< sx(left[li])){// CHECKED 
 
 				// x-axis is partially inside
 				// else{
@@ -407,12 +379,12 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						#ifdef DEBUG
 						out("one is partailly inside other - right < left - INtersecting");
 						#endif					
-						if(h1<h2){
+						if(h1>=h2){
 							#ifdef DEBUG
 							out("one is partailly inside other - right < left - INtersecting - h1 < h2");
 							#endif											
 							float X = (fy(left[li]) - fy(right[ri]) + right[ri].second*fx(right[ri]) - left[li].second*fx(left[li]))/(right[ri].second - left[li].second);
-							float Y = left[li].second*(X-fx(left[li])) + fy(left[li]);	
+							float Y = left[li].second*(X-fx(left[li])) + fy(left[li]);
 							// update right and push lol
 							setsx(right[ri],X);
 							setsy(right[ri],Y);
@@ -421,9 +393,11 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 							//update left
 							setfx(left[li], X);
 							setfy(left[li], Y);
+							res.pb(left[li]);
+							li++;
 		
 						}
-						else if(h1>=h2){
+						else if(h1<h2){
 							#ifdef DEBUG
 							out("one is partailly inside other - INtersecting - h1 >= h2");
 							#endif																	
@@ -437,20 +411,24 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 							setsy(temp, ee);
 							temp.second = right[ri].second;
 							res.pb(temp);
+
 							setfx(temp, fx(left[li]));
 							setfy(temp, fy(left[li]));
 							setsx(temp, X);
 							setsy(temp, Y);
 							temp.second = left[li].second;
 							res.pb(temp);
-							setsx(right[ri], X);
-							setsy(right[ri], Y);
+
+							setfx(right[ri], X);
+							setfy(right[ri], Y);
 							res.pb(right[ri]);
 							
 							ee = (sx(right[ri]) - fx(left[li]))*left[li].second+fy(left[li]);
 							// update left
 							setfx(left[li], sx(right[ri]));
 							setsy(left[li], ee);
+							res.pb(left[li]);
+							li++;
 							ri++;
 						}
 				}	
@@ -469,12 +447,14 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						setfx(temp,fx(right[ri]));
 						setfy(temp,fy(right[ri]));
 						setsx(temp,fx(left[li]));
-						setsy(temp,h2+(fx(left[li])-fx(right[ri])*right[ri].second));
+						setsy(temp,fy(right[ri])+((fx(left[li])-fx(right[ri]))*right[ri].second));
 						temp.second = right[ri].second;
 						res.pb(temp);
 						// res.pb(left[li]);
 
 						ri++;
+						res.pb(left[li]);
+						li++;
 
 					}					
 					else if(h1<h2){
@@ -488,25 +468,27 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						setfx(left[li], sx(right[ri]));
 						setsy(left[li], ee);
 						ri++;
+						res.pb(left[li]);
+						li++;
 					}		
-					else{
-						#ifdef DEBUG
-						out("one is partailly inside other - NOT intersecting - h1 <= h2 - else");
-						#endif								
-						float hh2 = left[li].second*sx(right[ri]) + (fy(left[li]) - left[li].second*fx(left[li]));
-						if(hh2>=sy(right[ri])){
-							setsx(right[ri], fx(left[li]));
-							setsy(right[ri], (fx(left[li])-fx(right[ri]))*right[ri].second + fy(right[ri]));
-							res.pb(right[ri]);
-							ri++;
-						}
-						else{
-							setfx(left[li], fx(right[ri]));
-							setfy(left[li], hh2);
-							res.pb(right[ri]);
-							ri++;
-						}
-					}			
+					// else{
+					// 	#ifdef DEBUG
+					// 	out("one is partailly inside other - NOT intersecting - h1 <= h2 - else");
+					// 	#endif								
+					// 	float hh2 = left[li].second*sx(right[ri]) + (fy(left[li]) - left[li].second*fx(left[li]));
+					// 	if(hh2>=sy(right[ri])){
+					// 		setsx(right[ri], fx(left[li]));
+					// 		setsy(right[ri], (fx(left[li])-fx(right[ri]))*right[ri].second + fy(right[ri]));
+					// 		res.pb(right[ri]);
+					// 		ri++;
+					// 	}
+					// 	else{
+					// 		setfx(left[li], fx(right[ri]));
+					// 		setfy(left[li], hh2);
+					// 		res.pb(right[ri]);
+					// 		ri++;
+					// 	}
+					// }			
 				}
 			}
 			else{ // CHECKED THIS BLOK
@@ -529,32 +511,42 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					pp a = left[li], b =  right[ri];
 					float X = (fy(a) - fy(b) + b.second*fx(b) - a.second*fx(a))/(b.second - a.second);
 					float Y = a.second*(X-fx(a)) + fy(a);
+					h1 = sy(left[li]);
+					h2 = Y + (sx(left[li])-X)*right[ri].second;
 					if(h1>h2){
-						setfx(a,fx(right[ri]));
-						setfy(a,fy(right[ri]));
-						setsx(a,fx(left[ri]));
-						setsy(a,fy(right[ri]) + (fx(left[li])-fx(right[ri]))*right[ri].second + fy(right[ri]) );
-						a.second = right[ri].second;
-						res.pb(a);
-						setsx(left[li],X);
-						setsy(left[li],Y);
-						res.pb(left[li]);
-						setfx(right[ri],X);
-						setfy(right[ri],Y);
-						li++;
-					}
-					else if(h1<=h2){
 						setfx(a,fx(right[ri]));
 						setfy(a,fy(right[ri]));
 						setsx(a,X);
 						setsy(a,Y);
 						a.second = right[ri].second;
 						res.pb(a);
+
 						setfx(left[li],X);
 						setfy(left[li],Y);
+						
 						res.pb(left[li]);
-						setfx(right[ri],sx(left[li]));
-						setfy(right[ri],Y + right[ri].second * (sx(left[li])-X));
+						setfx(right[ri], sx(left[li]));
+						setfy(right[ri], Y + right[ri].second*(sx(right[ri]) - X));
+						res.pb(right[ri]);
+						ri++;
+						li++;
+					}
+					else if(h1<=h2){
+						setfx(a,fx(right[ri]));
+						setfy(a,fy(right[ri]));
+						setsx(a,fx(left[li]));
+						setsy(a,fy(right[ri]) + (fx(left[li])-fx(right[ri]))*right[ri].second);
+						a.second = right[ri].second;
+						res.pb(a);
+
+						setsx(left[li],X);
+						setsy(left[li],Y);
+						res.pb(left[li]);
+
+						setfx(right[ri],X);
+						setfy(right[ri],Y);
+						res.pb(right[ri]);
+						ri++;
 						li++;						
 					}
 				}
@@ -563,13 +555,15 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					out("one is completely inside other - NOT Intersecting right < lrft");
 					#endif
 					// not intersecting just delete one
-					if(h1<h2 || h1==h2 && left[li].second < right[ri].second){
+					if(h1<h2){
 						#ifdef DEBUG
 						out("NOT Intersecting left < right and h1 > h2");
 						#endif
+						res.pb(right[ri]);
+						ri++;
 						li++;
 					}
-					else if(h1>=h2){
+					else if(h1>h2){
 						#ifdef DEBUG
 						out("NOT Intersecting left < right and h1 < h2");
 						#endif						
@@ -581,9 +575,12 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						setsy(temp,fy(right[ri])+(fx(left[li]) - fx(right[ri]))*right[ri].second);
 						temp.second = right[ri].second;
 						res.pb(temp);
+
 						res.pb(left[li]);
 						setfx(right[ri],sx(left[li]));
-						setfy(right[ri], fy(right[ri]) +right[ri].second*(fx(right[ri])-fx(left[li])));
+						setfy(right[ri], fy(right[ri]) +right[ri].second*(sx(left[li])-fx(left[li])));
+						res.pb(right[ri]);
+						ri++;
 						li++;
 					}
 				}
@@ -689,7 +686,7 @@ int main(){
 	vec(pp) data = merger_sort(posters);
 	area = calarea(data);
 	for(auto i : data){
-		out(fx(i)<<" "<<fy(i)<<" "<<sx(i)<<" "<<sy(i));
+		// out(fx(i)<<" "<<fy(i)<<" "<<sx(i)<<" "<<sy(i));
 	}
 	// cout<<areaOfTwoTrapiziums(posters[0],posters[1])<<endl;
 	cout << static_cast<int>(area)<< endl;
