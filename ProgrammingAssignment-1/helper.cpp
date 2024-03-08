@@ -80,7 +80,7 @@ bool isintersecting(pp a,pp b){
 	float X = (fy(a) - fy(b) + b.second*fx(b) - a.second*fx(a))/(b.second - a.second);
 	float Y = a.second*(X-fx(a)) + fy(a);
 	// return ((fy(a)-fy(b))*(sy(a)-sy(b))<=0);
-	return ((X < fx(a) && X > sx(a)) && (X < fx(b) && X > sx(b)));
+	return ((X >= fx(a) && X <= sx(a)) && (X >= fx(b) && X <= sx(b)));
 }
 
 void helpme(pp &a, float FX, float FY, float SX, float SY, float slope){
