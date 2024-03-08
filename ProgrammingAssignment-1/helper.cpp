@@ -97,18 +97,19 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 	#endif
 
 	while(li<left.size() && ri<right.size()){
-		// dout("Entered main loop");
+		dout("Entered main loop");
 		if(sx(right[ri]) <= fx(left[li])){
 			dout("CASE 1");
 			res.pb(right[ri]);
-			res.pb(left[li]);
-			li++;
+			// res.pb(left[li]);
+			// li++;
 			ri++;
 		}
 		else if(fx(right[ri]) >= sx(left[li])){
 			dout("CASE 2");
-			res.pb(right[ri++]);
-			res.pb(left[li++]);
+			// res.pb(right[ri++]);
+			res.pb(left[li]);
+			li++;
 		}
 		else if(fx(right[ri]) >= fx(left[li]) && sx(right[ri]) <= sx(left[li])){
 			bool flag = isintersecting(left[li], right[ri]);
@@ -125,9 +126,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					helpme(right[ri], X, Y, sx(right[ri]), sy(right[ri]), right[ri].second);
 					res.pb(right[ri]);
 					helpme(left[li], sx(right[ri]), left[li].second*(sx(right[ri])) + fy(left[li])-left[li].second*fx(left[li]), sx(left[li]), sy(left[li]), left[li].second);
-					res.pb(left[li]);
+					// res.pb(left[li]);
 					ri++;
-					li++;
+					// li++;
 				}
 				else if(h1 < fy(right[ri])){
 					dout("CASE 4");
@@ -137,8 +138,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					helpme(right[ri], fx(right[ri]), fy(right[ri]), X, Y, right[ri].second);
 					res.pb(right[ri]);
 					helpme(left[li],X, Y, sx(left[li]), sy(left[li]), left[li].second);
-					res.pb(left[li]);
-					li++; ri++;
+					// res.pb(left[li]);
+					// li++; 
+					ri++;
 				}
 				else{
 					if(right[ri].second > left[li].second){
@@ -149,14 +151,14 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						helpme(right[ri], X, Y, sx(right[ri]), sy(right[ri]), right[ri].second);
 						res.pb(right[ri]);
 						helpme(left[li], sx(right[ri]), left[li].second*(sx(right[ri])) + fy(left[li])-left[li].second*fx(left[li]), sx(left[li]), sy(left[li]), left[li].second);
-						res.pb(left[li]);
+						// res.pb(left[li]);
 						ri++;
-						li++;						
+						// li++;						
 					}
 					else{
 						dout("CASE 6");
-						res.pb(left[li]);
-						li++;
+						// res.pb(left[li]);
+						// li++;
 						ri++;
 					}
 				}
@@ -167,8 +169,8 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 				
 				if(h1>fy(right[ri])){
 					dout("CASE 7");
-					res.pb(left[li]);
-					li++;
+					// res.pb(left[li]);
+					// li++;
 					ri++;
 				}
 				else if(h1<fy(right[ri])){
@@ -178,8 +180,8 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					res.pb(temp);
 					res.pb(right[ri]);
 					helpme(left[li], sx(right[ri]),sx(right[ri])*left[li].second + (fy(left[li]) -left[li].second*fx(left[li])), sx(left[li]), sy(left[li]), left[li].second);
-					res.pb(left[li]);
-					li++;
+					// res.pb(left[li]);
+					// li++;
 					ri++;
 				}
 			}	
@@ -199,8 +201,8 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					helpme(left[li], X, Y, sx(left[li]), sy(left[li]), left[li].second);
 					res.pb(left[li]);
 					helpme(right[ri], sx(left[li]), right[ri].second*(sx(left[li])) + (fy(right[ri])-right[ri].second*fx(right[ri])), sx(right[ri]), sy(right[ri]), right[ri].second);
-					res.pb(right[ri]);
-					ri++;
+					// res.pb(right[ri]);
+					// ri++;
 					li++;
 				}
 				else if(h1 < fy(left[li])){
@@ -211,8 +213,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					helpme(left[li], fx(left[li]), fy(left[li]), X, Y, left[li].second);
 					res.pb(left[li]);
 					helpme(right[ri],X, Y, sx(right[ri]), sy(right[ri]), right[ri].second);
-					res.pb(right[ri]);
-					li++; ri++;
+					// res.pb(right[ri]);
+					li++; 
+					// ri++;
 				}
 				else{
 					if(right[ri].second < left[li].second){
@@ -223,15 +226,15 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						helpme(left[li], X, Y, sx(left[li]), sy(left[li]), left[li].second);
 						res.pb(left[li]);
 						helpme(right[ri], sx(left[li]), right[ri].second*(sx(left[li])) + fy(right[ri])-right[ri].second*fx(right[ri]), sx(right[ri]), sy(right[ri]), right[ri].second);
-						res.pb(right[ri]);
-						ri++;
+						// res.pb(right[ri]);
+						// ri++;
 						li++;						
 					}
 					else{
 						dout("CASE 12");
-						res.pb(right[ri]);
+						// res.pb(right[ri]);
 						li++;
-						ri++;
+						// ri++;
 					}
 				}
 			}
@@ -241,9 +244,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 				
 				if(h1>fy(left[li])){
 					dout("CASE 14");
-					res.pb(right[ri]);
+					// res.pb(right[ri]);
 					li++;
-					ri++;
+					// ri++;
 				}
 				else if(h1<fy(left[li])){
 					dout("CASE 13");
@@ -252,9 +255,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					res.pb(temp);
 					res.pb(left[li]);
 					helpme(right[ri], sx(left[li]),sx(left[li])*right[ri].second + (fy(right[ri]) -right[ri].second*fx(right[ri])), sx(right[ri]), sy(right[ri]), right[ri].second);
-					res.pb(right[ri]);
+					// res.pb(right[ri]);
 					li++;
-					ri++;
+					// ri++;
 				}
 			}	
 		}
@@ -270,9 +273,9 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					helpme(left[li], fx(left[li]), fy(left[li]), X, Y, left[li].second);
 					res.pb(left[li]);
 					helpme(right[ri],X, Y, sx(right[ri]), sy(right[ri]), right[ri].second);
-					res.pb(right[ri]);
+					// res.pb(right[ri]);
 					li++;
-					ri++;
+					// ri++;
 				}
 				else if(h1 < fy(right[ri])){
 					dout("CASE 16");
@@ -284,8 +287,8 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					helpme(left[li],X,Y,sx(left[li]), sy(left[li]),left[li].second);
 					res.pb(left[li]);
 					helpme(right[ri],sx(left[li]), sx(left[li])*right[ri].second + (fy(right[ri]) - right[ri].second*fx(right[ri])),sx(right[ri]),sy(right[ri]),right[ri].second);
-					res.pb(right[ri]);
-					ri++;
+					// res.pb(right[ri]);
+					// ri++;
 					li++;
 				}
 				else{
@@ -293,15 +296,17 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 						dout("CASE 17");
 						res.pb(left[li]);
 						helpme(right[ri],sx(left[li]), sx(left[li])*right[ri].second + (fy(right[ri]) - right[ri].second*fx(right[ri])), sx(right[ri]), sy(right[ri]), right[ri].second);
-						res.pb(right[ri]);
-						li++; ri++;
+						// res.pb(right[ri]);
+						li++; 
+						// ri++;
 					}
 					else{
 						dout("CASE 18");
 						helpme(left[li],fx(left[li]), fy(left[li]), X, Y, left[li].second);
 						res.pb(left[li]);
-						res.pb(right[ri]);
-						li++; ri++;
+						// res.pb(right[ri]);
+						li++; 
+						// ri++;
 					}
 				}
 			}
@@ -310,15 +315,17 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					dout("CASE 19");
 					res.pb(left[li]);
 					helpme(right[ri], sx(left[li]), sx(left[li])*right[ri].second + (fy(right[ri]) -right[ri].second*fx(right[ri])), sx(right[ri]), sy(right[ri]), right[ri].second);
-					res.pb(right[ri]);
-					li++; ri++;
+					// res.pb(right[ri]);
+					li++; 
+					// ri++;
 				}
 				else{
 					dout("CASE 20");
 					helpme(left[li],fx(left[li]),fy(left[li]),fx(right[ri]),fx(right[ri])*left[li].second + (fy(left[li]) - left[li].second*fx(left[li])), left[li].second);
 					res.pb(left[li]);
-					res.pb(right[ri]);
-					li++;ri++;
+					// res.pb(right[ri]);
+					li++;
+					// ri++;
 				}
 			}
 		}
@@ -334,8 +341,8 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					helpme(right[ri], fx(right[ri]), fy(right[ri]), X, Y, right[ri].second);
 					res.pb(right[ri]);
 					helpme(left[li],X, Y, sx(left[li]), sy(left[li]), left[li].second);
-					res.pb(left[li]);
-					li++;
+					// res.pb(left[li]);
+					// li++;
 					ri++;
 				}
 				else if(h1 < fy(left[li])){
@@ -348,24 +355,26 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					helpme(right[ri],X,Y,sx(right[ri]), sy(right[ri]),right[ri].second);
 					res.pb(right[ri]);
 					helpme(left[li],sx(right[ri]), sx(right[ri])*left[li].second + (fy(left[li]) - left[li].second*fx(left[li])),sx(left[li]),sy(left[li]),left[li].second);
-					res.pb(left[li]);
+					// res.pb(left[li]);
 					ri++;
-					li++;
+					// li++;
 				}
 				else{
 					if(left[li].second <= right[ri].second){
 						dout("CASE 23");
 						res.pb(right[ri]);
 						helpme(left[li],sx(right[ri]), sx(right[ri])*left[li].second + (fy(left[li]) - left[li].second*fx(left[li])), sx(left[li]), sy(left[li]), left[li].second);
-						res.pb(left[li]);
-						li++; ri++;
+						// res.pb(left[li]);
+						// li++; 
+						ri++;
 					}
 					else{
 						dout("CASE 24");
 						helpme(right[ri],fx(right[ri]), fy(right[ri]), X, Y, right[ri].second);
-						res.pb(left[li]);
+						// res.pb(left[li]);
 						res.pb(right[ri]);
-						li++; ri++;
+						// li++; 
+						ri++;
 					}
 				}
 			}
@@ -374,15 +383,17 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 					dout("CASE 25");
 					res.pb(right[ri]);
 					helpme(left[li], sx(right[ri]), sx(right[ri])*left[li].second + (fy(left[li]) -left[li].second*fx(left[li])), sx(left[li]), sy(left[li]), left[li].second);
-					res.pb(left[li]);
-					li++; ri++;
+					// res.pb(left[li]);
+					// li++; 
+					ri++;
 				}
 				else{
 					dout("CASE 26");
 					helpme(right[ri],fx(right[ri]),fy(right[ri]),fx(left[li]),fx(left[li])*right[ri].second + (fy(right[ri]) - right[ri].second*fx(right[ri])), right[ri].second);
-					res.pb(left[li]);
+					// res.pb(left[li]);
 					res.pb(right[ri]);
-					li++;ri++;
+					// li++;
+					ri++;
 				}
 			}
 		}
@@ -456,8 +467,8 @@ int main(){
 	// #ifdef DEBUG
 	// #endif
 	vec(pp) posters1 = posters;
-	sort(posters1.begin(), posters1.end(), comparePosters);
-	lengthCovered = length(posters1);
+	sort(posters.begin(), posters.end(), comparePosters);
+	lengthCovered = length(posters);
 	cout << static_cast<int>(lengthCovered)<< endl;
 
 
