@@ -35,11 +35,7 @@ typedef long long ll;
 #define mp make_pair
 #define pb push_back
 #define vec(x) vector<x> 
-#define fi(i,a,b) for(ll i(a);i<b;i++)
-#define fd(i,a,b) for(ll i(a);i>=b;i--)
 #define jui()  (ios_base:: sync_with_stdio(false),cin.tie(NULL));
-#define yes() cout<<"YES"<<"\n"
-#define no() cout<<"NO"<<"\n"
 #define in(n) cin>>n
 #define out(n) cout<<n<<"\n"
 #define fx(t) t.first.first.X()
@@ -61,7 +57,7 @@ bool comparePosters(const pp& a, const pp& b) {
     return a.first.first.X() < b.first.first.X();
 }
 
-float length(vector <pp> posters){
+float length(vector <pp>& posters){
 	float lenCov = posters[0].first.second.X()-posters[0].first.first.X();
 	float MaxX = posters[0].first.second.X();
 	for(auto p:posters){
@@ -428,7 +424,7 @@ vec(pp) mymerge(vec(pp) &left, vec(pp) &right){
 }
 
 
-vec(pp)merger_sort(vec(pp)posters){
+vec(pp)merger_sort(vec(pp)& posters){
 
 	#ifdef DEBUG
     	// out("i am in merger_sort");
@@ -442,7 +438,7 @@ vec(pp)merger_sort(vec(pp)posters){
 	return mymerge(left,right);
 }
 
-float calarea(vec(pp) data){
+float calarea(vec(pp)& data){
 	float area = 0;
 	// int n = 0;
 	for(auto i : data){
@@ -479,7 +475,6 @@ int main(){
 	// }
 	// #ifdef DEBUG
 	// #endif
-	vec(pp) posters1 = posters;
 	sort(posters.begin(), posters.end(), comparePosters);
 	lengthCovered = length(posters);
 	cout << static_cast<int>(lengthCovered)<< endl;
