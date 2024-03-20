@@ -9,7 +9,7 @@
 #include <algorithm>
 
 using namespace std;
-
+// #define DEBUG
 
 class Point {
  public:
@@ -49,7 +49,8 @@ typedef long long ll;
 
 void dout(string s){
 	#ifdef DEBUG
-		out(s);
+		// out(s);
+		cerr<<s<<endl;
 	#endif		
 }
 
@@ -477,7 +478,8 @@ int main(){
 	// #endif
 	sort(posters.begin(), posters.end(), comparePosters);
 	lengthCovered = length(posters);
-	cout << static_cast<int>(lengthCovered)<< endl;
+	ll length1 = round(lengthCovered);
+	cout << static_cast<int>(length1)<< endl;
 
 
 	vec(pp) data = merger_sort(posters);
@@ -486,7 +488,8 @@ int main(){
 		// out(fx(i)<<" "<<fy(i)<<" "<<sx(i)<<" "<<sy(i));
 	}
 	// cout<<areaOfTwoTrapiziums(posters[0],posters[1])<<endl;
-	cout << static_cast<int>(area)<< endl;
+	ll area1 = round(area);
+	cout << static_cast<int>(area1)<< endl;
 
 	return 0; 
 }

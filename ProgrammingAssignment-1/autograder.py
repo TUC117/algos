@@ -9,8 +9,10 @@ def compare_outputs(input_file, output_file):
     return True
 
 if __name__ == "__main__":
-    for i in range(1, 11):  # Assuming the files are named input1.txt, input2.txt, ..., input10.txt
-        input_file = f'./expected_outputs/output{i}.txt'
-        output_file = f'./student_ouput/student_output{i}.txt'
+    for i in range(1, 27):  # Assuming the files are named input1.txt, input2.txt, ..., input10.txt
+        output_file = f'./mytestout/outputcase{i}.txt'
+        input_file = f'./uout/outputcase{i}.txt'
         if not compare_outputs(input_file, output_file):
-            break
+            # break
+            print(f"Outpus is not matching for case{i+1}.txt file")
+            continue
